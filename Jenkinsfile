@@ -2,6 +2,11 @@ pipeline {
     agent any 
     
     stages{
+        stage("ansible process"){
+            steps {
+                echo "installing package on web server"
+                ansiblePlaybook disableHostKeyChecking: true, inventory: '/home/ubuntu/', playbook: '/home/ubuntu/playbook/test.yml', vaultTmpPath: ''
+           }
         stage("Clone Code"){
             steps {
                 echo "Cloning the code"
@@ -30,11 +35,6 @@ pipeline {
                 sh "docker-compose down && docker-compose up -d"
                  }
             }
-           stage("ansible process"){
-            steps {
-                echo "installing package on web server"
-                ansiblePlaybook disableHostKeyChecking: true, inventory: '/home/ubuntu/', playbook: '/home/ubuntu/playbook/test.yml', vaultTmpPath: ''
-           }
         }
     }
 }
